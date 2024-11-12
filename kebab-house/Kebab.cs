@@ -1,41 +1,66 @@
 ﻿using System;
+using System.Collections.Generic;
 
-public class Kebab
+namespace kebab_house
 {
-    private string Name;
-    private Dictionary<string, int> Ingredients;
-
-    public Kebab(string name, Dictionary<string, int> ingredients)
+    public class Kebab
     {
-        Name = name;
-        Ingredients = ingredients;
-    }
+        private string Name;
+        private Dictionary<string, int> Ingredients;
+        private double BasePrice;
+        private double TaxRate;
 
-    private bool CanBeMade(Dictionary<string, Ingredient> warehouse)
-    {
-        foreach (var ingredient in Ingredients)
+        public Kebab(string name, Dictionary<string, int> ingredients)
         {
-            if (!warehouse.ContainsKey(ingredient.Key) || warehouse[ingredient.Key].GetQuantity() < ingredient.Value)
-            {
-                return false;
-            }
+            Name = name;
+            Ingredients = ingredients;
+            TaxRate = 0.15;
+            BasePrice = CalculatePrice();
         }
-        return true;
-    }
 
-    public void Make(Dictionary<string, Ingredient> warehouse)
-    {
-        if (CanBeMade(warehouse))
+        public bool CanBeMade(Warehouse warehouse)
         {
+            var ingredientDict = warehouse.GetIngredients();
             foreach (var ingredient in Ingredients)
             {
-                warehouse[ingredient.Key].ReduceQuantity(ingredient.Value);
+                if (!ingredientDict.ContainsKey(ingredient.Key) || ingredientDict[ingredient.Key] < ingredient.Value)
+                {
+                    return false;
+                }
             }
-            Console.WriteLine($"Kebab {Name} was made.");
+            return true;
         }
-        else
+
+        public void Make(Warehouse warehouse)
         {
-            Console.WriteLine($"Not enough ingredients to make {Name}.");
+            var ingredientDict = warehouse.GetIngredients();
+            foreach (var ingredient in Ingredients)
+            {
+               ingredientDict[ingredient.Key] -= ingredient.Value;
+            }
+        }
+
+        private double CalculatePrice() {
+            Dictionary<string, double> ingredientPrices = new Dictionary<string, double> { { "Meat", 0.5 }, { "Tomato", 0.2 }, { "Lettuce", 0.1 }, { "Ketchup", 0.3 }, { "Bun", 0.5 }, { "Onion", 0.15 }, { "Cheese", 0.4 }, { "Cucumber", 0.25 }, { "Yogurt", 0.35 }, { "Chili", 0.2 } };
+            double totalPrice = 0;
+            foreach (var ingredient in Ingredients) {
+                totalPrice += ingredient.Value * ingredientPrices[ingredient.Key];
+            }
+            return totalPrice;
+        }
+
+        public string GetName()
+        {
+            return Name;
+        }
+
+        public Dictionary<string, int> GetIngredients()
+        {
+            return Ingredients;
+        }
+
+        public double GetPrice() {
+            return BasePrice * (1 + TaxRate);
         }
     }
 }

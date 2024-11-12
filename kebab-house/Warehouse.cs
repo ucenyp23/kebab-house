@@ -1,37 +1,41 @@
 ﻿using System;
+using System.Collections.Generic;
 
-public class Warehouse
+namespace kebab_house
 {
-    private Dictionary<string, Ingredient> Ingredients;
-
-    public Warehouse()
+    public class Warehouse
     {
-        Ingredients = new Dictionary<string, Ingredient>();
-    }
+        private Dictionary<string, int> Ingredients;
 
-    public void AddIngredient(string name, int quantity)
-    {
-        if (Ingredients.ContainsKey(name))
+        public Warehouse()
         {
-            Ingredients[name].AddQuantity(quantity);
+            Ingredients = new Dictionary<string, int>();
         }
-        else
-        {
-            Ingredients[name] = new Ingredient(name, quantity);
-        }
-    }
 
-    public void DisplayIngredients()
-    {
-        Console.WriteLine("Current ingredients in the warehouse:");
-        foreach (var ingredient in Ingredients)
+        public void AddIngredient(string name, int quantity)
         {
-            Console.WriteLine($"{ingredient.Value.GetName()}: {ingredient.Value.GetQuantity()}");
+            if (Ingredients.ContainsKey(name))
+            {
+                Ingredients[name] += quantity;
+            }
+            else
+            {
+                Ingredients[name] = quantity;
+            }
         }
-    }
 
-    public Dictionary<string, Ingredient> GetIngredients()
-    {
-        return Ingredients;
+        public void DisplayIngredients()
+        {
+            Console.WriteLine("Current ingredients in the warehouse:");
+            foreach (var ingredient in Ingredients)
+            {
+                Console.WriteLine($"{ingredient.Key}: {ingredient.Value}");
+            }
+        }
+
+        public Dictionary<string, int> GetIngredients()
+        {
+            return Ingredients;
+        }
     }
 }

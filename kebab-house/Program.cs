@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace kebab_house
 {
@@ -8,6 +9,8 @@ namespace kebab_house
         static void Main(string[] args)
         {
             Warehouse warehouse = new Warehouse();
+            WarehouseManager warehouseManager = new WarehouseManager(warehouse);
+            Cheff cheff = new Cheff(warehouse, warehouseManager);
 
             warehouse.AddIngredient("Meat", 500);
             warehouse.AddIngredient("Tomato", 300);
@@ -39,22 +42,27 @@ namespace kebab_house
                 Console.WriteLine("\nKebab Menu:");
                 for (int i = 0; i < kebabs.Count; i++)
                 {
-                    Console.WriteLine($"{i + 1}. {kebabs[i].Name}");
+                    Console.WriteLine($"{i + 1}. {kebabs[i].GetName()} ({string.Join(", ", kebabs[i].GetIngredients().Select(x => $"{x.Key}: {x.Value}"))}) - {kebabs[i].GetPrice():F2} EUR");
                 }
                 Console.WriteLine("11. Display Warehouse");
-                Console.WriteLine("12. Exit");
+                Console.WriteLine("12. Create Custom Kebab");
+                Console.WriteLine("13. Exit");
                 Console.Write("Choose an option: ");
                 int option = int.Parse(Console.ReadLine());
 
                 if (option >= 1 && option <= 10)
                 {
-                    kebabs[option - 1].Make(warehouse.GetIngredients(), 1);
+                    cheff.CreateKebab(kebabs[option - 1]);
                 }
                 else if (option == 11)
                 {
                     warehouse.DisplayIngredients();
                 }
                 else if (option == 12)
+                {
+                    CreateCustomKebab(warehouse, cheff);
+                }
+                else if (option == 13)
                 {
                     return;
                 }
@@ -64,75 +72,27 @@ namespace kebab_house
                 }
             }
         }
-    }
 
-    class Warehouse
-    {
-        private Dictionary<string, int> ingredients = new Dictionary<string, int>();
-
-        public void AddIngredient(string name, int quantity)
+        static void CreateCustomKebab(Warehouse warehouse, Cheff cheff)
         {
-            if (ingredients.ContainsKey(name))
+            Console.Write("Enter kebab name: ");
+            string name = Console.ReadLine();
+            Dictionary<string, int> ingredients = new Dictionary<string, int>();
+            while (true)
             {
-                ingredients[name] += quantity;
-            }
-            else
-            {
-                ingredients[name] = quantity;
-            }
-        }
-
-        public void DisplayIngredients()
-        {
-            Console.WriteLine("\nCurrent ingredients:");
-            foreach (var ingredient in ingredients)
-            {
-                Console.WriteLine($"{ingredient.Key}: {ingredient.Value}");
-            }
-        }
-
-        public Dictionary<string, int> GetIngredients()
-        {
-            return ingredients;
-        }
-    }
-
-    class Kebab
-    {
-        public string Name { get; set; }
-        private Dictionary<string, int> Ingredients { get; set; }
-
-        public Kebab(string name, Dictionary<string, int> ingredients)
-        {
-            Name = name;
-            Ingredients = ingredients;
-        }
-
-        public void Make(Dictionary<string, int> warehouseIngredients, int quantity)
-        {
-            bool canMake = true;
-
-            foreach (var ingredient in Ingredients)
-            {
-                if (!warehouseIngredients.ContainsKey(ingredient.Key) || warehouseIngredients[ingredient.Key] < ingredient.Value * quantity)
+                Console.Write("Enter ingredient (or 'done' to finish): ");
+                string ingredient = Console.ReadLine();
+                if (ingredient.ToLower() == "done")
                 {
-                    canMake = false;
                     break;
                 }
+                Console.Write("Enter quantity: ");
+                int quantity = int.Parse(Console.ReadLine());
+                ingredients[ingredient] = quantity;
             }
 
-            if (canMake)
-            {
-                foreach (var ingredient in Ingredients)
-                {
-                    warehouseIngredients[ingredient.Key] -= ingredient.Value * quantity;
-                }
-                Console.WriteLine($"\n{quantity} {Name}(s) made successfully!");
-            }
-            else
-            {
-                Console.WriteLine($"\nNot enough ingredients to make {quantity} {Name}(s).");
-            }
+            Kebab customKebab = new Kebab(name, ingredients);
+            cheff.CreateKebab(customKebab);
         }
     }
 }

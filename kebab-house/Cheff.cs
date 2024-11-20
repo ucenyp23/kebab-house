@@ -38,11 +38,12 @@ namespace KebabHouse
 
         private void RequestResupply(Kebab kebab)
         {
+            Dictionary<string, int> availableIngredients = warehouse.GetIngredients();
             foreach (var ingredient in kebab.GetIngredients())
             {
-                int neededAmount = ingredient.Value - warehouse.GetIngredientAmount(ingredient.Key);
-                if (neededAmount > 0)
+                if (!availableIngredients.ContainsKey(ingredient.Key) || availableIngredients[ingredient.Key] < ingredient.Value)
                 {
+                    int neededAmount = ingredient.Value - (availableIngredients.ContainsKey(ingredient.Key) ? availableIngredients[ingredient.Key] : 0);
                     warehouseManager.RestockIngredient(ingredient.Key, neededAmount);
                 }
             }

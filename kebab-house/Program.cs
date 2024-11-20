@@ -13,7 +13,6 @@ namespace KebabHouse
 
             warehouse.AddIngredient("Pita Bread", 100);
             warehouse.AddIngredient("Lamb", 1000);
-            warehouse.AddIngredient("Chicken", 1000);
             warehouse.AddIngredient("Tomato", 500);
             warehouse.AddIngredient("Lettuce", 300);
             warehouse.AddIngredient("Ketchup", 150);

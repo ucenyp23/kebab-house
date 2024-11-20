@@ -2,49 +2,49 @@
 
 namespace KebabHouse
 {
-    public class Cheff
+    public class Chef
     {
-        private Warehouse warehouse;
-        private WarehouseManager warehouseManager;
+        private readonly Warehouse _warehouse;
+        private readonly WarehouseManager _warehouseManager;
 
-        public Cheff(Warehouse warehouse, WarehouseManager warehouseManager)
+        public Chef(Warehouse warehouse, WarehouseManager warehouseManager)
         {
-            this.warehouse = warehouse;
-            this.warehouseManager = warehouseManager;
+            _warehouse = warehouse;
+            _warehouseManager = warehouseManager;
         }
 
         public void CreateKebab(Kebab kebab)
         {
-            if (kebab.CanBeMade(warehouse))
+            if (kebab.CanBeMade(_warehouse))
             {
-                kebab.Make(warehouse);
-                Console.WriteLine($"Cheff created a {kebab.GetName()} Kebab.");
+                kebab.Make(_warehouse);
+                Console.WriteLine($"Chef created a {kebab.Name} Kebab.");
             }
             else
             {
-                Console.WriteLine($"Not enough ingredients to make {kebab.GetName()} Kebab. Asking WarehouseManager to resupply.");
+                Console.WriteLine($"Not enough ingredients to make {kebab.Name} Kebab. Asking WarehouseManager to resupply.");
                 RequestResupply(kebab);
-                if (kebab.CanBeMade(warehouse))
+                if (kebab.CanBeMade(_warehouse))
                 {
-                    kebab.Make(warehouse);
-                    Console.WriteLine($"Cheff created a {kebab.GetName()} Kebab after resupply.");
+                    kebab.Make(_warehouse);
+                    Console.WriteLine($"Chef created a {kebab.Name} Kebab after resupply.");
                 }
                 else
                 {
-                    Console.WriteLine($"Even after resupply, there are not enough ingredients to make {kebab.GetName()} Kebab.");
+                    Console.WriteLine($"Even after resupply, there are not enough ingredients to make {kebab.Name} Kebab.");
                 }
             }
         }
 
         private void RequestResupply(Kebab kebab)
         {
-            Dictionary<string, int> availableIngredients = warehouse.GetIngredients();
-            foreach (var ingredient in kebab.GetIngredients())
+            var availableIngredients = _warehouse.Ingredients;
+            foreach (var ingredient in kebab.Ingredients)
             {
                 if (!availableIngredients.ContainsKey(ingredient.Key) || availableIngredients[ingredient.Key] < ingredient.Value)
                 {
-                    int neededAmount = ingredient.Value - (availableIngredients.ContainsKey(ingredient.Key) ? availableIngredients[ingredient.Key] : 0);
-                    warehouseManager.RestockIngredient(ingredient.Key, neededAmount);
+                    var neededAmount = ingredient.Value - (availableIngredients.ContainsKey(ingredient.Key) ? availableIngredients[ingredient.Key] : 0);
+                    _warehouseManager.RestockIngredient(ingredient.Key, neededAmount);
                 }
             }
         }

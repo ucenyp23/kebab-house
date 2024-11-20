@@ -4,16 +4,16 @@ namespace KebabHouse
 {
     public class WarehouseManager
     {
-        private Warehouse warehouse;
+        private readonly Warehouse _warehouse;
 
         public WarehouseManager(Warehouse warehouse)
         {
-            this.warehouse = warehouse;
+            _warehouse = warehouse;
         }
 
         public void RestockIngredient(string name, int quantity)
         {
-            warehouse.AddIngredient(name, quantity);
+            _warehouse.AddIngredient(name, quantity);
             Console.WriteLine($"{quantity} units of {name} added to the warehouse by Warehouse Manager.");
         }
     }

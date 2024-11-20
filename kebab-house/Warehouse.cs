@@ -5,7 +5,7 @@ namespace KebabHouse
 {
     public class Warehouse
     {
-        private Dictionary<string, int> Ingredients;
+        public Dictionary<string, int> Ingredients { get; private set; }
 
         public Warehouse()
         {
@@ -31,11 +31,6 @@ namespace KebabHouse
             {
                 Console.WriteLine($"{ingredient.Key}: {ingredient.Value}");
             }
-        }
-
-        public Dictionary<string, int> GetIngredients()
-        {
-            return Ingredients;
         }
     }
 }

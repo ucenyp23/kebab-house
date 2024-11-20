@@ -24,6 +24,11 @@ namespace KebabHouse
             }
         }
 
+        public bool HasIngredient(string ingredient)
+        {
+            return Ingredients.ContainsKey(ingredient);
+        }
+
         public void DisplayIngredients()
         {
             Console.WriteLine("Current ingredients in the warehouse:");

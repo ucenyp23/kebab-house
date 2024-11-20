@@ -85,22 +85,37 @@ namespace KebabHouse
             }
 
             var ingredients = new Dictionary<string, int>();
+
             while (true)
             {
                 Console.Write("Enter ingredient (or 'done' to finish): ");
                 var ingredient = Console.ReadLine();
+
                 if (string.IsNullOrEmpty(ingredient) || ingredient.ToLower() == "done")
                 {
                     break;
                 }
 
-                Console.Write("Enter quantity: ");
-                if (!int.TryParse(Console.ReadLine(), out int quantity))
+                if (!warehouse.HasIngredient(ingredient))
                 {
-                    Console.WriteLine("Invalid input, please enter a number.");
+                    Console.WriteLine($"Ingredient '{ingredient}' does not exist in the warehouse.");
                     continue;
                 }
+
+                Console.Write("Enter quantity: ");
+                if (!int.TryParse(Console.ReadLine(), out int quantity) || quantity <= 0)
+                {
+                    Console.WriteLine("Invalid quantity. Please enter a positive number.");
+                    continue;
+                }
+
                 ingredients[ingredient] = quantity;
+            }
+
+            if (ingredients.Count == 0)
+            {
+                Console.WriteLine("No ingredients were added. Custom kebab creation cancelled.");
+                return;
             }
 
             var customKebab = new Kebab(name, ingredients);
@@ -108,5 +123,6 @@ namespace KebabHouse
             Console.WriteLine($"'{name}' Kebab was created with price: {price:F2} EUR");
             chef.CreateKebab(customKebab);
         }
+
     }
 }

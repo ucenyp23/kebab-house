@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace kebab_house
+namespace KebabHouse
 {
     public class Cheff
     {
@@ -18,20 +18,20 @@ namespace kebab_house
             if (kebab.CanBeMade(warehouse))
             {
                 kebab.Make(warehouse);
-                Console.WriteLine($"Cheff created a {kebab.GetName()}.");
+                Console.WriteLine($"Cheff created a {kebab.GetName()} Kebab.");
             }
             else
             {
-                Console.WriteLine($"Not enough ingredients to make {kebab.GetName()}. Asking WarehouseManager to resupply.");
+                Console.WriteLine($"Not enough ingredients to make {kebab.GetName()} Kebab. Asking WarehouseManager to resupply.");
                 RequestResupply(kebab);
                 if (kebab.CanBeMade(warehouse))
                 {
                     kebab.Make(warehouse);
-                    Console.WriteLine($"Cheff created a {kebab.GetName()} after resupply.");
+                    Console.WriteLine($"Cheff created a {kebab.GetName()} Kebab after resupply.");
                 }
                 else
                 {
-                    Console.WriteLine($"Even after resupply, there are not enough ingredients to make {kebab.GetName()}.");
+                    Console.WriteLine($"Even after resupply, there are not enough ingredients to make {kebab.GetName()} Kebab.");
                 }
             }
         }

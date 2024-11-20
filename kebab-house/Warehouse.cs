@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace kebab_house
+namespace KebabHouse
 {
     public class Warehouse
     {

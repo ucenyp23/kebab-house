@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace kebab_house
+namespace KebabHouse
 {
     public class WarehouseManager
     {

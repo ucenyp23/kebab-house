@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace kebab_house
+namespace KebabHouse
 {
     public class Kebab
     {
@@ -41,7 +41,19 @@ namespace kebab_house
         }
 
         private double CalculatePrice() {
-            Dictionary<string, double> ingredientPrices = new Dictionary<string, double> { { "Meat", 0.5 }, { "Tomato", 0.2 }, { "Lettuce", 0.1 }, { "Ketchup", 0.3 }, { "Bun", 0.5 }, { "Onion", 0.15 }, { "Cheese", 0.4 }, { "Cucumber", 0.25 }, { "Yogurt", 0.35 }, { "Chili", 0.2 } };
+            Dictionary<string, double> ingredientPrices = new Dictionary<string, double> {
+                { "Lamb", 2.0 },
+                { "Chicken", 1.8 },
+                { "Tomato", 0.2 },
+                { "Lettuce", 0.1 },
+                { "Ketchup", 0.3 },
+                { "Pita Bread", 0.5 },
+                { "Onion", 0.15 },
+                { "Cheese", 0.4 },
+                { "Cucumber", 0.25 },
+                { "Yogurt", 0.35 },
+                { "Chili", 0.2 }
+            };
             double totalPrice = 0;
             foreach (var ingredient in Ingredients) {
                 totalPrice += ingredient.Value * ingredientPrices[ingredient.Key];

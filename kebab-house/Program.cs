@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace kebab_house
 {
@@ -48,7 +47,13 @@ namespace kebab_house
                 Console.WriteLine("12. Create Custom Kebab");
                 Console.WriteLine("13. Exit");
                 Console.Write("Choose an option: ");
-                int option = int.Parse(Console.ReadLine());
+                int option;
+                if (!int.TryParse(Console.ReadLine(), out option))
+                {
+                    Console.WriteLine("Invalid input, please enter a number.");
+                    continue;
+                }
+
 
                 if (option >= 1 && option <= 10)
                 {
@@ -76,18 +81,30 @@ namespace kebab_house
         static void CreateCustomKebab(Warehouse warehouse, Cheff cheff)
         {
             Console.Write("Enter kebab name: ");
-            string name = Console.ReadLine();
+            string? name = Console.ReadLine();
+            if (string.IsNullOrEmpty(name))
+            {
+                Console.WriteLine("Kebab name cannot be empty.");
+                return;
+            }
+
             Dictionary<string, int> ingredients = new Dictionary<string, int>();
             while (true)
             {
                 Console.Write("Enter ingredient (or 'done' to finish): ");
-                string ingredient = Console.ReadLine();
-                if (ingredient.ToLower() == "done")
+                string? ingredient = Console.ReadLine();
+                if (string.IsNullOrEmpty(ingredient) || ingredient.ToLower() == "done")
                 {
                     break;
                 }
+
                 Console.Write("Enter quantity: ");
-                int quantity = int.Parse(Console.ReadLine());
+                int quantity;
+                if (!int.TryParse(Console.ReadLine(), out quantity))
+                {
+                    Console.WriteLine("Invalid input, please enter a number.");
+                    continue;
+                }
                 ingredients[ingredient] = quantity;
             }
 

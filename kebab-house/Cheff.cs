@@ -40,8 +40,11 @@ namespace KebabHouse
         {
             foreach (var ingredient in kebab.GetIngredients())
             {
-                int neededAmount = ingredient.Value;
-                warehouseManager.RestockIngredient(ingredient.Key, neededAmount);
+                int neededAmount = ingredient.Value - warehouse.GetIngredientAmount(ingredient.Key);
+                if (neededAmount > 0)
+                {
+                    warehouseManager.RestockIngredient(ingredient.Key, neededAmount);
+                }
             }
         }
     }
